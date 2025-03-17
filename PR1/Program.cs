@@ -1,3 +1,11 @@
+class Program
+{
+    static void Main(string[] args)
+    {
+
+    }
+}
+
 class Account
 {
     public string Name;
