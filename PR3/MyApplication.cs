@@ -12,7 +12,6 @@ namespace upp
 
         private Complex z1;
         private Complex z2;
-        private Complex z3;
 
         public void Start()
         {
@@ -30,7 +29,7 @@ namespace upp
                 choice = Console.ReadLine();
 
                 switch (choice) {
-                    case "1": AddNum(); break;
+                    case "1": AddNum(); Complex z3 = (Complex)z1.Clone(); break;
                     case "+": z3 = Complex.Addition(z1, z2); Console.WriteLine($"({z1}) + ({z2}) = {z3}"); break;
                     case "-": z3 = Complex.Subtraction(z1, z2); Console.WriteLine($"({z1}) - ({z2}) = {z3}"); break;
                     case "*": z3 = Complex.Multiplication(z1, z2); Console.WriteLine($"({z1}) * ({z2}) = {z3}"); break;
