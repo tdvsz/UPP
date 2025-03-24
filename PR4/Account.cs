@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace upp
 {
@@ -10,6 +6,8 @@ namespace upp
     {
         private decimal Amount { get; set; }
         private string Currency {  get; set; }
+
+        private static string[] currencyList = { "USD", "BYN", "EUR" };
 
         public Account(decimal amount, string currency)
         {
@@ -19,11 +17,35 @@ namespace upp
 
         public static Account AddAccount()
         {
-            Console.Write("Введите сумму счета: ");
-            decimal amount = decimal.Parse(Console.ReadLine());
+            decimal amount;
+            string currency;
 
-            Console.Write("Введите валюту счета: ");
-            string currency = Console.ReadLine();
+            while (true)
+            {
+                Console.Write("Введите сумму счета: ");
+                string input = Console.ReadLine();
+                try
+                {
+                    amount = Convert.ToDecimal(input);
+                    break;
+                }
+                catch
+                {
+                    Console.WriteLine("Ошибка. Введите корректное число.");
+                }
+            }
+
+            while (true)
+            {
+                Console.Write("Введите валюту счета: ");
+                currency = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(currency) && ValidateCurrency(currency))
+                {
+                    break;
+                }
+
+                Console.WriteLine("Ошибка. Введите корректное название валюты.");
+            }
 
             return new Account(amount, currency); 
         }
@@ -32,16 +54,17 @@ namespace upp
         {
             Console.WriteLine($"Сумма: {Amount}");
         }
-        
-        public decimal ChangeAmount(decimal newAmount) {
+
+        public void ChangeAmount(decimal newAmount)
+        {
             if (newAmount > 0)
             {
-                return Amount = newAmount;
+                Amount = newAmount;
             }
 
-            else {
+            else
+            {
                 Console.WriteLine("Ошибка. Невозможно изменить счет");
-                return 0;
             }
         }
 
@@ -50,29 +73,35 @@ namespace upp
             return Currency;
         }
 
-        public string ChangeCurrency(string newCurrency)
+        public bool ChangeCurrency(string newCurrency)
         {
-            bool validCurrency = false;
-            string[] currencyList = { "USD", "BYN", "EUR" };
+            if (Currency == newCurrency)
+            {
+                Console.WriteLine("Эта валюта уже установлена.");
+                return false;
+            }
 
-            for (int i = 0; i < currencyList.Length; i++) { 
-                if (currencyList[i] == newCurrency)
+            if (ValidateCurrency(newCurrency))
+            {
+                Currency = newCurrency;
+                return true;
+            }
+
+            Console.WriteLine("Ошибка. Неверная валюта");
+            return false;
+        }
+
+        public static bool ValidateCurrency(string currencyToValidate) 
+        {
+            for (int i = 0; i < currencyList.Length; i++)
+            {
+                if (currencyList[i] == currencyToValidate)
                 {
-                    validCurrency = true;
-                    break;
+                    return true;
                 }
             }
 
-            if (validCurrency)
-            {
-                return Currency = newCurrency;
-            }
-
-            else
-            {
-                Console.WriteLine("Ошибка. Неверная валюта");
-                return null;
-            }
+            return false;
         }
 
         public void AccountPrint()
@@ -92,15 +121,17 @@ namespace upp
 
         public static Account operator -(Account account, decimal amount)
         {
-            if (amount > 0 && account.Amount >= amount)
+            if (amount <= 0)
             {
-                account.Amount -= amount;
-            }
-            else
-            {
-                Console.WriteLine("Ошибка. На счете недостаточно средств.");
+                throw new ArgumentException("Сумма должна быть положительной.");
             }
 
+            if (account.Amount < amount)
+            {
+                throw new InvalidOperationException("Ошибка. На счете недостаточно средств.");
+            }
+
+            account.Amount -= amount;
             return account;
         }
 
@@ -116,26 +147,22 @@ namespace upp
 
         public static bool operator >(Account account1, Account account2)
         {
-            if (account1.Currency == account2.Currency)
+            if (account1.Currency != account2.Currency)
             {
-                return account1.Amount > account2.Amount;
+                throw new InvalidOperationException("Нельзя сравнивать счета с разными валютами");
             }
-            else
-            {
-                throw new InvalidOperationException("Валюты счетов не совпадают");
-            }
+
+            return account1.Amount > account2.Amount;
         }
 
         public static bool operator <(Account account1, Account account2)
         {
-            if (account1.Currency == account2.Currency)
+            if (account1.Currency != account2.Currency)
             {
-                return account1.Amount < account2.Amount;
+                throw new InvalidOperationException("Нельзя сравнивать счета с разными валютами");
             }
-            else
-            {
-                throw new InvalidOperationException("Валюты счетов не совпадают");
-            }
+
+            return account1.Amount < account2.Amount;
         }
 
         public static Account operator ++(Account account)

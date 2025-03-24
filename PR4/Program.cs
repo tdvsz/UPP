@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
 
 namespace upp
 {
@@ -22,8 +20,11 @@ namespace upp
                 a3 = a1 + a2;
                 a3.AccountPrint();
             }
-
             catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -35,40 +36,40 @@ namespace upp
             a3.AccountPrint();
 
             Console.WriteLine("\nСнятие со счета значения 5");
-            Console.Write("До: "); a1.AccountPrint();
-            a1 -= 5m;
-            Console.Write("После: "); a1.AccountPrint();
+            try
+            {
+                Console.Write("До: "); a1.AccountPrint();
+                a1 -= 5m;
+                Console.Write("После: "); a1.AccountPrint();
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             Console.WriteLine("\nПополнение счета значением 5");
-            Console.Write("До: "); a2.AccountPrint();
+            Console.Write("До: " ); a2.AccountPrint();
             a2 += 5m;
             Console.Write("После: "); a2.AccountPrint();
 
             Console.WriteLine("\nСравниване счетов с одинаковыми валютами");
-            if (a1 > a2)
-            {
-                Console.WriteLine("Первый счет больше");
-            }
-            else
-            {
-                Console.WriteLine("Второй счет больше");
-            }
+            Console.WriteLine(a1 > a2 ? "Первый счет больше" : "Второй счет больше");
 
             Console.WriteLine("\nСравниване счетов с разными валютами");
             a1.ChangeCurrency("EUR");
             try
             {
-                if (a1 > a2)
-                {
-                    Console.WriteLine("Первый счет больше");
-                }
-                else
-                {
-                    Console.WriteLine("Второй счет больше");
-                }
+                Console.WriteLine(a1 > a2 ? "Первый счет больше" : "Второй счет больше");
             }
-
             catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
