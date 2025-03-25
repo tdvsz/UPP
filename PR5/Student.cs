@@ -4,19 +4,12 @@ namespace upp
 {
     class Student
     {
-        //private char[] Surname = new char[15];
-        //private char[] Name = new char[15];
-        //private char[] Patronymic = new char[15];
-        //private char[] Specialty = new char[2];
-        //private byte Course;
-        //private DateTime Birthday;
-
-        private string Surname;
-        private string Name;
-        private string Patronymic;
-        private string Specialty;
-        private byte Course;
-        private DateTime Birthday;
+        public string Surname;
+        public string Name;
+        public string Patronymic;
+        public string Specialty;
+        public byte Course;
+        public DateTime Birthday;
 
         public Student(string surname, string name, string patronymic, string specialty, byte course, DateTime birthday)
         {

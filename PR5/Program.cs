@@ -7,8 +7,7 @@ namespace upp
         static void Main(string[] args)
         {
             Application app = new Application();
-            app.AddStudent();
-            app.ShowStudents();
+            app.Start();
         }
     }
 }
