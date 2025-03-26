@@ -12,6 +12,8 @@ namespace upp
                 Console.WriteLine(
                 "1 - Добавить студента\n" +
                 "2 - Вывести список студентов\n" +
+                "3 - Вывести одного студента по номеру\n" +
+                "4 - Изменить информацию о студенте\n" +
                 "+ - Сортировка по возрастанию\n" +
                 "= - Сортировка по убыванию");
 
@@ -22,6 +24,8 @@ namespace upp
                 {
                     case "1": AddStudent(); break;
                     case "2": ShowStudents(); break;
+                    case "3": GetCurrentStudent(); break;
+                    case "4": ChangeStudentInfo(); break;
                     case "+": SortByASC(); break;
                     case "=": SortByDESC(); break;
                     case "": return;
@@ -91,6 +95,42 @@ namespace upp
             Console.WriteLine("Список отсортирован по фамилии (убывание).");
 
             ShowStudents();
+        }
+
+        public void GetCurrentStudent()
+        {
+            if (students.Count == 0) 
+            {
+                Console.WriteLine("Список пуст");
+                return; 
+            }
+
+            else
+            {
+                Console.Write("Номер элемента: ");
+                int index = int.Parse(Console.ReadLine());
+
+                Student currentStudent = students[index];
+                Console.WriteLine(currentStudent);
+            }
+        }
+
+        public void ChangeStudentInfo()
+        {
+            if (students.Count == 0)
+            {
+                Console.WriteLine("Список пуст");
+                return;
+            }
+
+            else
+            {
+                Console.Write("Номер элемента: ");
+                int index = int.Parse(Console.ReadLine());
+
+                students.RemoveAt(index);
+                AddStudent();
+            }
         }
 
         public int GetCount()
