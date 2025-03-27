@@ -6,8 +6,23 @@ namespace upp
     {
         public static void Main(string[] args)
         {
-            double[] arr = new double[5];
+            Console.WriteLine("Задание 1");
+            Task1();
+            Console.WriteLine();
+
+            Console.WriteLine("Задание 2");
+            Task2();
+            Console.WriteLine();
+
+            Console.WriteLine("Задание 3");
+            Task3();
+        }
+
+        public static void Task1()
+        {
             Random random = new Random();
+
+            double[] arr = new double[5];
 
             for (int i = 0; i < arr.Length; i++)
             {
@@ -32,106 +47,112 @@ namespace upp
                 sum += arr[i];
             }
 
-            Console.WriteLine($"\nИндекс минимального элемента: {minIndex}");
+            Console.WriteLine($"Индекс минимального элемента: {minIndex}");
             Console.WriteLine($"Сумма элементов после минимума: {sum}");
+        }
 
+        public static void Task2()
+        {
+            Random random = new Random();
 
+            int[] arr = new int[5];
+            int sum = 0;
 
-            int[] arr2 = new int[5];
-            int sum2 = 0;
-
-            Console.Write("\nВведите k: ");
+            Console.Write("Введите k: ");
             int K = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < arr2.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
-                arr2[i] = random.Next(0, 10);
+                arr[i] = random.Next(0, 10);
             }
 
             Console.WriteLine("Исходный массив:");
-            PrintArr(arr2);
+            PrintArr(arr);
 
-            while (sum2 < K)
+            while (sum < K)
             {
-                if (arr2.Length > 1)
+                if (arr.Length > 1)
                 {
-                    var tmp = arr2[arr2.Length - 1];
+                    int tmp = arr[arr.Length - 1];
 
-                    for (var i = arr2.Length - 1; i != 0; --i)
+                    for (int i = arr.Length - 1; i != 0; --i)
                     {
-                        arr2[i] = arr2[i - 1];
+                        arr[i] = arr[i - 1];
                     }
 
-                    arr2[0] = tmp;
-                    sum2 += arr2[0];
+                    arr[0] = tmp;
+                    sum += arr[0];
                 }
             }
 
             Console.WriteLine("Преобразованный массив:");
-            PrintArr(arr2);
-            Console.WriteLine($"Сумма перенесенных элементов: {sum2}");
+            PrintArr(arr);
+            Console.WriteLine($"Сумма перенесенных элементов: {sum}");
+        }
 
+        public static void Task3()
+        {
+            Random random = new Random();
 
+            int[,] arr = new int[5, 5];
 
-            int[,] arr3 = new int[5, 5];
+            int rows = arr.GetLength(0);
+            int cols = arr.GetLength(1);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    arr3[i, j] = random.Next(0, 10);
+                    arr[i, j] = random.Next(0, 10);
                 }
             }
 
-            Console.WriteLine("\nИсходный массив");
+            Console.WriteLine("Исходный массив");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    Console.Write($"{arr3[i, j]} ");
+                    Console.Write($"{arr[i, j]} ");
                 }
                 Console.WriteLine();
             }
-
-            int rows = arr3.GetLength(0);
-            int cols = arr3.GetLength(1);
 
             if (rows > 0 && cols > 0)
             {
-                int temp = arr3[0, 0];
-                arr3[0, 0] = arr3[rows - 1, 0];
-                arr3[rows - 1, 0] = temp;
+                int temp = arr[0, 0];
+                arr[0, 0] = arr[rows - 1, 0];
+                arr[rows - 1, 0] = temp;
             }
 
-            Console.WriteLine("\nПреобразованный массив");
+            Console.WriteLine("Преобразованный массив");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    Console.Write($"{arr3[i, j]} ");
+                    Console.Write($"{arr[i, j]} ");
                 }
                 Console.WriteLine();
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = i + 1; j < 5; j++)
+                for (int j = i + 1; j < cols; j++)
                 {
-                    int temp = arr3[i, j];
-                    arr3[i, j] = arr3[j, i];
-                    arr3[j, i] = temp;
+                    int temp = arr[i, j];
+                    arr[i, j] = arr[j, i];
+                    arr[j, i] = temp;
                 }
             }
 
             Console.WriteLine("Транспонированная матрица");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    Console.Write($"{arr3[i, j]} ");
+                    Console.Write($"{arr[i, j]} ");
                 }
                 Console.WriteLine();
             }
