@@ -20,16 +20,23 @@ namespace upp
                 Console.Write("Действие: ");
                 string choice = Console.ReadLine();
 
-                switch (choice) 
+                try
                 {
-                    case "1": AddStudent(); break;
-                    case "2": ShowStudents(); break;
-                    case "3": GetCurrentStudent(); break;
-                    case "4": ChangeStudentInfo(); break;
-                    case "+": SortByASC(); break;
-                    case "=": SortByDESC(); break;
-                    case "": return;
-                    default: Console.WriteLine("Неверная команда"); break;
+                    switch (choice)
+                    {
+                        case "1": AddStudent(); break;
+                        case "2": ShowStudents(); break;
+                        case "3": GetCurrentStudent(); break;
+                        case "4": ChangeStudentInfo(); break;
+                        case "+": SortByASC(); break;
+                        case "=": SortByDESC(); break;
+                        case "": return;
+                        default: Console.WriteLine("Неверная команда"); break;
+                    }
+                }
+                catch (Exception e)
+                { 
+                    Console.WriteLine($"Ошибка: {e.Message}"); 
                 }
             }
         }
@@ -41,16 +48,45 @@ namespace upp
             Console.WriteLine("Введите информацию о студенте по шаблону: Фамилия Имя Отчество Специальность, Курс, Дата рождения (дд.мм.гггг)");
             string input = Console.ReadLine();
 
-            string[] words = input.Split(separatingStrings, StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                string[] words = input.Split(separatingStrings, StringSplitOptions.RemoveEmptyEntries);
 
-            string surname = words[0];
-            string name = words[1];
-            string patronymic = words[2];
-            string specialty = words[3];
-            byte course = byte.Parse(words[4]);
-            DateTime birthday = DateTime.Parse(words[5]);
+                string surname = words[0];
 
-            students.Add(new Student(surname, name, patronymic, specialty, course, birthday));
+                ValidateNamePart(surname);
+
+                string name = words[1];
+
+                ValidateNamePart(name);
+
+                string patronymic = words[2];
+
+                ValidateNamePart(patronymic);
+
+                string specialty = words[3];
+
+                if (specialty.Length != 2)
+                {
+                    throw new Exception("Специальность должна состоять из 2 букв");
+                }
+
+                byte course = byte.Parse(words[4]);
+
+                if (course < 1 || course > 5)
+                {
+                    throw new Exception("Курс должен быть числом от 1 до 5");
+                }
+
+                DateTime birthday = DateTime.Parse(words[5]);
+
+                students.Add(new Student(surname, name, patronymic, specialty, course, birthday));
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine($"Ошибка: {e.Message}");
+            }
         }
 
         public void SortByASC()
@@ -99,37 +135,56 @@ namespace upp
 
         public void GetCurrentStudent()
         {
-            if (students.Count == 0) 
+            try
             {
-                Console.WriteLine("Список пуст");
-                return; 
-            }
+                if (students.Count == 0)
+                {
+                    Console.WriteLine("Список пуст");
+                    return;
+                }
 
-            else
-            {
                 Console.Write("Номер элемента: ");
                 int index = int.Parse(Console.ReadLine());
 
+                if (index < 0 || index > students.Count)
+                {
+                    throw new Exception("Неверный номер элемента");
+                }
+
                 Student currentStudent = students[index];
                 Console.WriteLine(currentStudent);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
         public void ChangeStudentInfo()
         {
-            if (students.Count == 0)
+            try
             {
-                Console.WriteLine("Список пуст");
-                return;
-            }
+                if (students.Count == 0)
+                {
+                    Console.WriteLine("Список пуст");
+                    return;
+                }
 
-            else
-            {
                 Console.Write("Номер элемента: ");
                 int index = int.Parse(Console.ReadLine());
 
+                if (index < 0 || index > students.Count)
+                {
+                    throw new Exception("Неверный номер элемента");
+                }
+
                 students.RemoveAt(index);
                 AddStudent();
+            }
+
+            catch (Exception e) 
+            { 
+                Console.WriteLine(e.Message); 
             }
         }
 
@@ -142,6 +197,19 @@ namespace upp
             }
 
             return i;
+        }
+
+        public void ValidateNamePart(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new Exception("Поле не может быть пустым");
+            }
+
+            if (value.Length > 15)
+            {
+                throw new Exception("Поле не может может быть больше 15 символов");
+            }
         }
 
         public void ShowStudents()
