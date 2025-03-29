@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace upp
@@ -7,39 +8,50 @@ namespace upp
     {
         public static void Main(string[] args)
         {
-            string path = "emails.txt";
-            string pattern = @"^[a-z][a-z\d]{1,9}@[a-z]+\.[a-z]+$";
-            List<string> emails = new List<string>();
+            string path = "data.txt";
+            List<string> validLogins = new List<string>();
+            List<string> validEmails = new List<string>();
 
-            Console.WriteLine("Исходные email:");
-            
-            string line;
+            string loginPattern = @"^[a-zA-Z][a-zA-Z0-9]{1,9}$";
+            string emailPattern = @"^[a-z][a-z0-9]+@[a-z]+\.[a-z]+$";
+
+            Console.WriteLine("Исходные данные из файла:");
 
             try
             {
-                StreamReader sr = new StreamReader(path);
-                line = sr.ReadLine();
-                while (line != null)
+                using (StreamReader sr = new StreamReader(path))
                 {
-                    if (Regex.IsMatch(line, pattern))
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        emails.Add(line);
-                    }
+                        Console.WriteLine(line);
 
-                    Console.WriteLine(line);
-                    line = sr.ReadLine();
+                        if (Regex.IsMatch(line, loginPattern))
+                        {
+                            validLogins.Add(line);
+                        }
+                        else if (Regex.IsMatch(line, emailPattern))
+                        {
+                            validEmails.Add(line);
+                        }
+                    }
                 }
-                sr.Close();
+
+                Console.WriteLine("\nВалидные логины:");
+                foreach (string login in validLogins)
+                {
+                    Console.WriteLine(login);
+                }
+
+                Console.WriteLine("\nВалидные email:");
+                foreach (string email in validEmails)
+                {
+                    Console.WriteLine(email);
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-
-            Console.WriteLine("\nВалидные email:");
-            foreach (string email in emails)
-            {
-                Console.WriteLine(email);
+                Console.WriteLine("Ошибка: " + e.Message);
             }
         }
     }
