@@ -106,24 +106,58 @@ namespace upp
         }
 
         // IComparer
-        public int Compare(Student? x, Student? y)
+        private SortField sortField;
+        private SortDirection sortDirection;
+
+        public int Compare(Student x, Student y)
         {
-            throw new NotImplementedException();
+            if (x == null && y == null) return 0;
+            if (x == null) return -1 * GetDirectionMultiplier();
+            if (y == null) return 1 * GetDirectionMultiplier();
+
+            int result = 0;
+
+            switch (sortField)
+            {
+                case SortField.Surname:
+                    result = string.Compare(x.Surname, y.Surname, StringComparison.Ordinal);
+                    break;
+                case SortField.Specialty:
+                    result = string.Compare(x.Specialty, y.Specialty, StringComparison.Ordinal);
+                    break;
+                case SortField.Course:
+                    result = x.Course.CompareTo(y.Course);
+                    break;
+            }
+
+            return result * GetDirectionMultiplier();
+        }
+
+        private int GetDirectionMultiplier()
+        {
+            return sortDirection == SortDirection.Ascending ? 1 : -1;
+        }
+
+        public void Sort(SortField field, SortDirection direction)
+        {
+            sortField = field;
+            sortDirection = direction;
+            students.Sort(this);
         }
     }
 
-    //public enum SortDirection
-    //{
-    //    Ascending,
-    //    Descending
-    //}
+    public enum SortDirection
+    {
+        Ascending,
+        Descending
+    }
 
-    //public enum SortField
-    //{
-    //    Surname,
-    //    Course,
-    //    Specialty
-    //}
+    public enum SortField
+    {
+        Surname,
+        Course,
+        Specialty
+    }
 
     public class Student
     {
@@ -157,20 +191,39 @@ namespace upp
             }
         }
 
-        public void ValidateSpecialty(string specialty)
+        //public void ValidateSpecialty(string specialty)
+        //{
+        //    if (specialty.Length != 2)
+        //    {
+        //        throw new Exception("Специальность должна состоять из 2 букв");
+        //    }
+        //}
+
+        //public void ValidateCourse(byte course)
+        //{
+        //    if (course < 1 || course > 5)
+        //    {
+        //        throw new Exception("Курс должен быть числом от 1 до 5");
+        //    }
+        //}
+
+        public void ValidateData(string surname, string name, string patronymic, string specialty, byte course, out bool q)
         {
+            ValidateNamePart(surname);
+            ValidateNamePart(name);
+            ValidateNamePart(patronymic);
+
             if (specialty.Length != 2)
             {
                 throw new Exception("Специальность должна состоять из 2 букв");
             }
-        }
 
-        public void ValidateCourse(byte course)
-        {
             if (course < 1 || course > 5)
             {
                 throw new Exception("Курс должен быть числом от 1 до 5");
             }
+
+            q = true;
         }
 
         public override string ToString()
