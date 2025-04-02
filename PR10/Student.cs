@@ -3,10 +3,12 @@ using System.Collections;
 
 namespace upp
 {
-    public class StudentCollection : IList<Student>
+    public class StudentCollection : IList<Student>, IEnumerator<Student>, IComparer<Student>
     {
         private List<Student> students = new List<Student>();
+        private int currentIndex = -1;
 
+        // Ilist
         public Student this[int index] 
         {
             get => throw new NotImplementedException(); 
@@ -39,7 +41,7 @@ namespace upp
 
         public IEnumerator<Student> GetEnumerator()
         {
-            return students.GetEnumerator();
+            return this;
         }
 
         public int IndexOf(Student item)
@@ -65,6 +67,48 @@ namespace upp
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        // IEnumerator
+        public Student Current
+        {
+            get
+            {
+                if (currentIndex == -1 || currentIndex >= students.Count)
+                {
+                    throw new InvalidOperationException();
+                }
+                return students[currentIndex];
+            }
+        }
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+            Reset();
+        }
+
+        public bool MoveNext()
+        {
+            if (currentIndex < students.Count - 1)
+            {
+                currentIndex++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Reset()
+        {
+            currentIndex = -1;
+        }
+
+        // IComparer
+        public int Compare(Student? x, Student? y)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -99,6 +143,7 @@ namespace upp
             Course = course;
             Birthday = birthday;
         }
+
         public void ValidateNamePart(string value)
         {
             if (string.IsNullOrEmpty(value))
