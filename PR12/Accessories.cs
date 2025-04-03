@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace upp
 {
@@ -22,8 +23,32 @@ namespace upp
         DDR3
     }
 
-    public class AccessoriesComparer : IComparer<Accessories>
+    public class AccessoriesCollection : IComparer<Accessories>, IEnumerable<Accessories>
     {
+        private List<Accessories> accessories = new List<Accessories>();
+
+        public void Add(Accessories item)
+        {
+            accessories.Add(item);
+        }
+
+        public Accessories this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= accessories.Count)
+                    throw new IndexOutOfRangeException("Индекс находится вне границ коллекции");
+                return accessories[index];
+            }
+
+            set
+            {
+                if (index < 0 || index >= accessories.Count)
+                    throw new IndexOutOfRangeException("Индекс находится вне границ коллекции");
+                accessories[index] = value;
+            }
+        }
+
         private SortField sortField;
         private SortDirection sortDirection;
 
@@ -55,6 +80,58 @@ namespace upp
         {
             return sortDirection == SortDirection.Ascending ? 1 : -1;
         }
+
+        public void Sort(SortField field, SortDirection direction)
+        {
+            sortField = field;
+            sortDirection = direction;
+            accessories.Sort(this);
+        }
+
+        public void PrintCollection(string filter = "Все")
+        {
+            if (accessories.Count <= 0)
+            {
+                return;
+            }
+
+            foreach (var element in accessories)
+            {
+                if (filter == "Все" ||
+                    (filter == "Аудио карта" && element is AudioCard) ||
+                    (filter == "Модуль памяти" && element is MemoryModul))
+                {
+                    Console.WriteLine(element.GetInfo());
+                }
+            }
+        }
+
+        public string GetAccessoriesType(int index)
+        {
+            if (index < 0 || index >= accessories.Count)
+                return "Неверный индекс";
+
+            if (accessories[index] is AudioCard)
+            {
+                return "Аудио карта";
+            }
+            else
+            {
+                return "Модуль памяти";
+            }
+        }
+
+        public int Count => accessories.Count;
+
+        public IEnumerator<Accessories> GetEnumerator()
+        {
+            return accessories.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 
     public class Accessories
@@ -62,6 +139,13 @@ namespace upp
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public int Year { get; set; }
+
+        public Accessories(string manufacturer, string model, int year)
+        {
+            Manufacturer = manufacturer;
+            Model = model;
+            Year = year;
+        }
 
         public virtual string GetInfo()
         {
@@ -80,6 +164,13 @@ namespace upp
         public int AudioOutputsCount { get; set; }
         public bool Subwoofer { get; set; }
 
+        public AudioCard(string manufacturer, string model, int year, string audioChip, int audioOutputsCount, bool subwoofer) : base(manufacturer, model, year)
+        {
+            AudioChip = audioChip;
+            AudioOutputsCount = audioOutputsCount;
+            Subwoofer = subwoofer;
+        }
+
         public override string GetInfo()
         {
             return $"{Manufacturer}, {Model}, {Year}, {AudioChip}, {AudioOutputsCount}, {BoolToStatus(Subwoofer)}";
@@ -97,6 +188,14 @@ namespace upp
         public MemoryType MemoryType { get; set; }
         public int MemoryFrequency { get; set; }
         public bool ECC { get; set; }
+
+        public MemoryModul(string manufacturer, string model, int year, int amountOfMemory, MemoryType memoryType, int memoryFrequency, bool ecc) : base(manufacturer, model, year)
+        {
+            AmountOfMemory = amountOfMemory;
+            MemoryType = memoryType;
+            MemoryFrequency = memoryFrequency;
+            ECC = ecc;
+        }
 
         public override string GetInfo()
         {
