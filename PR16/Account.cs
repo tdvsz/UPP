@@ -52,7 +52,7 @@ namespace upp
                         {
                             Console.Write("Буквенный код: ");
                             string strCurrency = Console.ReadLine();
-                            currency = (T)(object)strCurrency;
+                            currency = (T)Convert.ChangeType(strCurrency, typeof(T))
                             return new Account<T>(amount, currency);
                         }
                         catch (Exception e)
@@ -66,7 +66,7 @@ namespace upp
                         {
                             Console.Write("Цифровой код: ");
                             int intCurrency = int.Parse(Console.ReadLine());
-                            currency = (T)(object)intCurrency;
+                            currency = (T)Convert.ChangeType(intCurrency, typeof(T))
                             return new Account<T>(amount, currency);
                         }
                         catch (Exception e)
