@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>upp</name>
+    </assembly>
+    <members>
+        <member name="T:upp.PassengerCarType">
+            <summary>
+            Типы легковых автомобилей
+            </summary>
+        </member>
+        <member name="T:upp.GearBoxType">
+            <summary>
+            Типы коробки передач
+            </summary>
+        </member>
+        <member name="T:upp.TruckType">
+            <summary>
+            Типы грузовиков
+            </summary>
+        </member>
+        <member name="T:upp.AutobusType">
+            <summary>
+            Типы автобусов
+            </summary>
+        </member>
+        <member name="T:upp.Car">
+            <summary>
+            Абстрактный базовый класс для всех автомобилей
+            </summary>
+        </member>
+        <member name="P:upp.Car.Brand">
+            <summary>
+            Марка автомобиля
+            </summary>
+        </member>
+        <member name="P:upp.Car.Model">
+            <summary>
+            Модель автомобиля
+            </summary>
+        </member>
+        <member name="P:upp.Car.Year">
+            <summary>
+            Год выпуска автомобиля
+            </summary>
+        </member>
+        <member name="P:upp.Car.MaxSpeed">
+            <summary>
+            Максимальная скорость автомобиля (км/ч)
+            </summary>
+        </member>
+        <member name="M:upp.Car.#ctor(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Конструктор базового класса Car
+            </summary>
+            <param name="brand">Марка автомобиля</param>
+            <param name="model">Модель автомобиля</param>
+            <param name="year">Год выпуска</param>
+            <param name="maxSpeed">Максимальная скорость (км/ч)</param>
+            <exception cref="T:System.Exception">Выбрасывается при отрицательной скорости</exception>
+        </member>
+        <member name="M:upp.Car.GetInfo">
+            <summary>
+            Абстрактный метод для получения информации об автомобиле
+            </summary>
+            <returns>Строка с информацией об автомобиле</returns>
+        </member>
+        <member name="T:upp.PassengerCar">
+            <summary>
+            Класс, представляющий легковой автомобиль
+            </summary>
+        </member>
+        <member name="P:upp.PassengerCar.Type">
+            <summary>
+            Тип кузова легкового автомобиля
+            </summary>
+        </member>
+        <member name="P:upp.PassengerCar.DoorCount">
+            <summary>
+            Количество дверей
+            </summary>
+        </member>
+        <member name="P:upp.PassengerCar.GearBox">
+            <summary>
+            Тип коробки передач
+            </summary>
+        </member>
+        <member name="P:upp.PassengerCar.Color">
+            <summary>
+            Цвет автомобиля
+            </summary>
+        </member>
+        <member name="M:upp.PassengerCar.#ctor(System.String,System.String,System.Int32,System.Int32,upp.PassengerCarType,System.Int32,upp.GearBoxType,System.String)">
+            <summary>
+            Конструктор класса PassengerCar
+            </summary>
+            <param name="brand">Марка автомобиля</param>
+            <param name="model">Модель автомобиля</param>
+            <param name="year">Год выпуска</param>
+            <param name="maxSpeed">Максимальная скорость (км/ч)</param>
+            <param name="type">Тип кузова</param>
+            <param name="doorCount">Количество дверей</param>
+            <param name="gearBox">Тип коробки передач</param>
+            <param name="color">Цвет автомобиля</param>
+            <exception cref="T:System.Exception">Выбрасывается при недопустимом количестве дверей</exception>
+        </member>
+        <member name="M:upp.PassengerCar.Clone">
+            <summary>
+            Создает копию объекта PassengerCar
+            </summary>
+            <returns>Новый объект PassengerCar с такими же свойствами</returns>
+        </member>
+        <member name="M:upp.PassengerCar.GetInfo">
+            <summary>
+            Возвращает строку с информацией о легковом автомобиле
+            </summary>
+            <returns>Строка с данными автомобиля</returns>
+        </member>
+        <member name="T:upp.Truck">
+            <summary>
+            Класс, представляющий грузовик
+            </summary>
+        </member>
+        <member name="P:upp.Truck.Tonnage">
+            <summary>
+            Грузоподъемность в тоннах
+            </summary>
+        </member>
+        <member name="P:upp.Truck.Axles">
+            <summary>
+            Количество осей (2 или 3)
+            </summary>
+        </member>
+        <member name="P:upp.Truck.TruckType">
+            <summary>
+            Тип грузовика
+            </summary>
+        </member>
+        <member name="M:upp.Truck.#ctor(System.String,System.String,System.Int32,System.Int32,System.Double,System.Int32,upp.TruckType)">
+            <summary>
+            Конструктор класса Truck
+            </summary>
+            <param name="brand">Марка грузовика</param>
+            <param name="model">Модель грузовика</param>
+            <param name="year">Год выпуска</param>
+            <param name="maxSpeed">Максимальная скорость (км/ч)</param>
+            <param name="tonnage">Грузоподъемность (тонны)</param>
+            <param name="axles">Количество осей</param>
+            <param name="truckType">Тип грузовика</param>
+            <exception cref="T:System.Exception">Выбрасывается при недопустимой грузоподъемности или количестве осей</exception>
+        </member>
+        <member name="M:upp.Truck.Clone">
+            <summary>
+            Создает копию объекта Truck
+            </summary>
+            <returns>Новый объект Truck с такими же свойствами</returns>
+        </member>
+        <member name="M:upp.Truck.GetInfo">
+            <summary>
+            Возвращает строку с информацией о грузовике
+            </summary>
+            <returns>Строка с данными грузовика</returns>
+        </member>
+        <member name="T:upp.Autobus">
+            <summary>
+            Класс, представляющий автобус
+            </summary>
+        </member>
+        <member name="P:upp.Autobus.Seats">
+            <summary>
+            Количество сидячих мест
+            </summary>
+        </member>
+        <member name="P:upp.Autobus.TotalSeats">
+            <summary>
+            Общее количество мест
+            </summary>
+        </member>
+        <member name="P:upp.Autobus.AutobusType">
+            <summary>
+            Тип автобуса
+            </summary>
+        </member>
+        <member name="M:upp.Autobus.#ctor(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,upp.AutobusType)">
+            <summary>
+            Конструктор класса Autobus
+            </summary>
+            <param name="brand">Марка автобуса</param>
+            <param name="model">Модель автобуса</param>
+            <param name="year">Год выпуска</param>
+            <param name="maxSpeed">Максимальная скорость (км/ч)</param>
+            <param name="seats">Количество сидячих мест</param>
+            <param name="totalSeats">Общее количество мест</param>
+            <param name="autobusType">Тип автобуса</param>
+            <exception cref="T:System.Exception">Выбрасывается при недопустимом количестве мест</exception>
+        </member>
+        <member name="M:upp.Autobus.Clone">
+            <summary>
+            Создает копию объекта Autobus
+            </summary>
+            <returns>Новый объект Autobus с такими же свойствами</returns>
+        </member>
+        <member name="M:upp.Autobus.GetInfo">
+            <summary>
+            Возвращает строку с информацией об автобусе
+            </summary>
+            <returns>Строка с данными автобуса</returns>
+        </member>
+    </members>
+</doc>
