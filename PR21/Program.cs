@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Threading;
+using System.Threading.Tasks;
 
 class Program
 {
@@ -26,35 +28,20 @@ class Program
 
         Console.WriteLine();
 
-        Thread[] threads = new Thread[N];
-        for (int i = 0; i < N; i++)
+        Parallel.For(0, N, row =>
         {
-            int row = i;
-            threads[i] = new Thread(() => RowProcces(row));
-            threads[i].Name = $"Поток {row + 1}";
-            threads[i].Priority = (row == 0) ? ThreadPriority.Highest : ThreadPriority.Normal;
-            threads[i].Start();
-        }
-
-        foreach (var thread in threads)
-        {
-            thread.Join();
-        }
+            RowProcess(row);
+        });
 
         Console.WriteLine("Обработанная матрица:");
         PrintMatrix();
     }
 
-    static void RowProcces(int row)
+    static void RowProcess(int row)
     {
-        double sum = 0;
-        for (int i = 0; i < matrix[row].Length; i++)
-        {
-            sum += matrix[row][i];
-        }
+        double sum = matrix[row].AsParallel().Sum();
 
-        Console.WriteLine($"{Thread.CurrentThread.Name}. Приоритет: {Thread.CurrentThread.Priority}");
-        Console.WriteLine($"Сумма строки { row + 1}: {sum}");
+        Console.WriteLine($"Поток {Task.CurrentId}. Сумма строки {row + 1}: {sum}");
 
         if (sum >= 0)
         {
@@ -90,7 +77,7 @@ class Program
             }
         }
 
-        Console.WriteLine($"Обработано в {Thread.CurrentThread.Name}\n");
+        Console.WriteLine($"Обработано в потоке {Task.CurrentId}\n");
     }
 
     static void PrintMatrix()
