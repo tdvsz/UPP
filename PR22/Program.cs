@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Collections.Generic;
 
 namespace upp
 {
@@ -10,13 +9,15 @@ namespace upp
         public static void Main(string[] args)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo("C:/Users/User/Desktop/test");
-            List<BMPimage> bMPimages = new List<BMPimage>();
-            foreach (var file in directoryInfo.GetFiles())
+            List<IImageSize> images = new List<IImageSize>();
+
+            foreach (var file in directoryInfo.GetFiles("*.bmp"))
             {
-                bMPimages.Add(new BMPimage(file.FullName));
+                images.Add(new BMPImageProxy(file.FullName));
             }
 
-            foreach (BMPimage image in bMPimages) { 
+            foreach (IImageSize image in images)
+            {
                 Console.WriteLine(image);
             }
         }
